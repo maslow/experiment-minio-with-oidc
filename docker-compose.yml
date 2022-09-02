@@ -2,20 +2,24 @@ version: '3.1'
 services:
   minio:
     image: 'minio/minio:RELEASE.2022-08-13T21-54-44Z'
+    extra_hosts:
+      - "localhost:192.168.3.7"
     environment:
       - MINIO_ROOT_USER=minio-root-user
       - MINIO_ROOT_PASSWORD=minio-root-password
       - MINIO_REGION_NAME=default
-    command: ["minio", "server", "/data/{0...3}", "--console-address", ":9101"]
+      - MINIO_IDENTITY_OPENID_CLAIM_NAME=tag
+      - MINIO_IDENTITY_OPENID_REDIRECT_URI=http://localhost:9001/oauth_callback
+    command: ["minio", "server", "/data/{0...3}", "--console-address", ":9001"]
     ports:
       - "9000:9000"
       - '9001:9001'
     volumes:
       - oss-data:/data
 
-  casdoor:
+  localhost:
     restart: always
-    image: casbin/casdoor:v1.105.0
+    image: casbin/casdoor:v1.107.0
     entrypoint: /bin/sh -c './server --createDatabase=true'
     ports:
       - "8000:8000"

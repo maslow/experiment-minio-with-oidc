@@ -4,8 +4,9 @@
 
 ```bash
 
-mc alias set minio http://localhost:9000 minio-root-user minio-root-password
+mc alias set oss http://localhost:9000 minio-root-user minio-root-password
 
-mc admin config set minio identity_openid config_url="http://localhost:8000/.well-known/openid-configuration" client_id="904adb32b9023be79305" client_secret="f46690a538fae90ca8e4261a71e860049b3c1f4c" claim_name="tag"
+mc admin config set oss identity_openid config_url="http://localhost:8000/.well-known/openid-configuration" client_id="c35559188a28f1d3ab12" client_secret="e697f25063b099f6ad294a1644e387e80712e797" claim_name="tag"
 
+mc admin service restart oss
 ```
